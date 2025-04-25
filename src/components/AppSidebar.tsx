@@ -1,3 +1,4 @@
+
 import {
   Home,
   LayoutDashboard,
@@ -19,12 +20,12 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/components/ui/sidebar";
 
 export function AppSidebar() {
-  const { isOpen, onOpen, onClose } = useSidebar();
+  const { state, open, setOpen, openMobile, setOpenMobile } = useSidebar();
 
   return (
     <aside className={cn(
       "fixed left-0 top-0 z-30 h-screen w-64 -translate-x-full border-r bg-background transition-transform lg:translate-x-0",
-      isOpen && "translate-x-0"
+      open && "translate-x-0"
     )}>
       <div className="flex h-full flex-col gap-4">
         <div className="flex h-14 items-center border-b px-4 font-semibold">
