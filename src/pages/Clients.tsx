@@ -49,16 +49,16 @@ const Clients = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
-        <Button onClick={() => setIsAddingClient(true)} className="flex items-center">
+        <Button onClick={() => setIsAddingClient(true)} className="flex items-center hover:scale-105 transition-transform">
           <Plus className="mr-2 h-4 w-4" />
           Add Client
         </Button>
       </div>
 
-      <Card>
+      <Card className="hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle>Search Clients</CardTitle>
         </CardHeader>
@@ -69,19 +69,19 @@ const Clients = () => {
               placeholder="Search by name, email, or phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 hover:border-primary transition-colors"
             />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle>All Clients</CardTitle>
         </CardHeader>
         <CardContent>
           {filteredClients.length > 0 ? (
-            <div className="rounded-md border">
+            <div className="rounded-md border overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -94,17 +94,17 @@ const Clients = () => {
                 </TableHeader>
                 <TableBody>
                   {filteredClients.map((client) => (
-                    <TableRow key={client.id}>
+                    <TableRow key={client.id} className="hover:bg-muted/30">
                       <TableCell className="font-medium">{client.name}</TableCell>
                       <TableCell>{client.email}</TableCell>
                       <TableCell>{client.phone}</TableCell>
                       <TableCell>{client.city || '-'}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => setEditingClient(client)}>
+                        <Button variant="ghost" size="sm" onClick={() => setEditingClient(client)} className="hover:text-primary">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDelete(client.id)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
+                        <Button variant="ghost" size="sm" onClick={() => handleDelete(client.id)} className="hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -122,8 +122,8 @@ const Clients = () => {
 
       {/* Client Form Modal */}
       {(isAddingClient || editingClient) && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-background rounded-lg w-full max-w-md max-h-[90vh] overflow-auto">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-background rounded-lg w-full max-w-md max-h-[90vh] overflow-auto animate-scale-in">
             <ClientForm 
               client={editingClient}
               onClose={() => {

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -18,11 +17,9 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    // Calculate dashboard statistics
     const clients = storageService.getClients();
     const orders = storageService.getOrders();
     
-    // Calculate top clients
     const clientOrderMap = new Map<string, { orders: number; revenue: number; name: string }>();
     
     orders.forEach(order => {
@@ -55,13 +52,11 @@ const Dashboard = () => {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
   
-  // Data for status chart
   const statusData = [
     { name: 'Pending', value: stats.pendingOrders },
     { name: 'Completed', value: stats.completedOrders },
   ];
 
-  // Data for revenue chart
   const revenueData = stats.topClients.map(client => ({
     name: client.name,
     revenue: client.revenue,
@@ -77,42 +72,42 @@ const Dashboard = () => {
       </div>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover-scale-subtle">
+        <Card className="hover:shadow-lg transition-shadow hover:scale-105 transform duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Clients</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalClients}</div>
-            <p className="text-xs text-muted-foreground">Clients in your database</p>
+            <p className="text-xs text-muted-foreground">Active clients</p>
           </CardContent>
         </Card>
-        <Card className="hover-scale-subtle">
+        <Card className="hover:shadow-lg transition-shadow hover:scale-105 transform duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            <ShoppingCart className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalOrders}</div>
             <p className="text-xs text-muted-foreground">Orders processed</p>
           </CardContent>
         </Card>
-        <Card className="hover-scale-subtle">
+        <Card className="hover:shadow-lg transition-shadow hover:scale-105 transform duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${stats.totalRevenue.toFixed(2)}
+              PKR {stats.totalRevenue.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground">Total earnings</p>
           </CardContent>
         </Card>
-        <Card className="hover-scale-subtle">
+        <Card className="hover:shadow-lg transition-shadow hover:scale-105 transform duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Pending Orders</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.pendingOrders}</div>
@@ -122,10 +117,10 @@ const Dashboard = () => {
       </div>
       
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue</TabsTrigger>
-          <TabsTrigger value="clients">Top Clients</TabsTrigger>
+        <TabsList className="bg-muted/50 p-1">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-background">Overview</TabsTrigger>
+          <TabsTrigger value="revenue" className="data-[state=active]:bg-background">Revenue</TabsTrigger>
+          <TabsTrigger value="clients" className="data-[state=active]:bg-background">Top Clients</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <Card>
@@ -167,7 +162,7 @@ const Dashboard = () => {
           </Card>
         </TabsContent>
         <TabsContent value="revenue" className="space-y-4">
-          <Card>
+          <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Revenue by Client</CardTitle>
               <CardDescription>
@@ -181,7 +176,7 @@ const Dashboard = () => {
                     <BarChart data={revenueData}>
                       <XAxis dataKey="name" />
                       <YAxis />
-                      <Tooltip formatter={(value) => [`$${value}`, 'Revenue']} />
+                      <Tooltip formatter={(value) => [`PKR ${value}`, 'Revenue']} />
                       <Bar dataKey="revenue" fill="#3b82f6" />
                     </BarChart>
                   </ResponsiveContainer>
@@ -195,7 +190,7 @@ const Dashboard = () => {
           </Card>
         </TabsContent>
         <TabsContent value="clients" className="space-y-4">
-          <Card>
+          <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Top Clients</CardTitle>
               <CardDescription>
@@ -208,10 +203,10 @@ const Dashboard = () => {
                   {stats.topClients.map((client, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between border-b pb-3 last:border-0"
+                      className="flex items-center justify-between border-b pb-3 last:border-0 hover:bg-muted/30 p-2 rounded-lg transition-colors"
                     >
                       <div className="flex items-center">
-                        <div className="bg-primary bg-opacity-10 p-2 rounded-full mr-3">
+                        <div className="bg-primary/10 p-2 rounded-full mr-3">
                           <Users className="h-4 w-4 text-primary" />
                         </div>
                         <div>
@@ -221,7 +216,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="font-medium">${client.revenue.toFixed(2)}</div>
+                      <div className="font-medium">PKR {client.revenue.toLocaleString()}</div>
                     </div>
                   ))}
                 </div>

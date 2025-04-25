@@ -66,16 +66,16 @@ const Orders = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-        <Button onClick={() => setIsAddingOrder(true)} className="flex items-center">
+        <Button onClick={() => setIsAddingOrder(true)} className="flex items-center hover:scale-105 transition-transform">
           <Plus className="mr-2 h-4 w-4" />
           Add Order
         </Button>
       </div>
 
-      <Card>
+      <Card className="hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle>Search Orders</CardTitle>
         </CardHeader>
@@ -86,19 +86,19 @@ const Orders = () => {
               placeholder="Search by order number or client name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 hover:border-primary transition-colors"
             />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle>All Orders</CardTitle>
         </CardHeader>
         <CardContent>
           {filteredOrders.length > 0 ? (
-            <div className="rounded-md border">
+            <div className="rounded-md border overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -112,7 +112,7 @@ const Orders = () => {
                 </TableHeader>
                 <TableBody>
                   {filteredOrders.map((order) => (
-                    <TableRow key={order.id}>
+                    <TableRow key={order.id} className="hover:bg-muted/30">
                       <TableCell className="font-medium">{order.orderNumber}</TableCell>
                       <TableCell>{getClientName(order.clientId)}</TableCell>
                       <TableCell>
@@ -126,14 +126,14 @@ const Orders = () => {
                           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                         </span>
                       </TableCell>
-                      <TableCell>${order.total.toFixed(2)}</TableCell>
+                      <TableCell>PKR {order.total.toLocaleString()}</TableCell>
                       <TableCell>{formatDate(order.createdAt)}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => setEditingOrder(order)}>
+                        <Button variant="ghost" size="sm" onClick={() => setEditingOrder(order)} className="hover:text-primary">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDelete(order.id)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
+                        <Button variant="ghost" size="sm" onClick={() => handleDelete(order.id)} className="hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -151,8 +151,8 @@ const Orders = () => {
 
       {/* Order Form Modal */}
       {(isAddingOrder || editingOrder) && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-background rounded-lg w-full max-w-2xl max-h-[90vh] overflow-auto">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-background rounded-lg w-full max-w-2xl max-h-[90vh] overflow-auto animate-scale-in">
             <OrderForm 
               order={editingOrder}
               onClose={() => {
