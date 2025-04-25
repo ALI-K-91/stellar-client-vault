@@ -1,104 +1,103 @@
+import {
+  Home,
+  LayoutDashboard,
+  Settings,
+  User,
+  ListChecks,
+  Database
+} from "lucide-react";
+import { NavLink } from "react-router-dom";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useSidebar } from "@/components/ui/sidebar";
 
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { 
-  Sidebar, 
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarHeader,
-  SidebarFooter
-} from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
-import { Home, Users, ShoppingCart, Settings, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-
-export const AppSidebar = () => {
-  const { logout } = useAuth();
-  const location = useLocation();
-  
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
-  const menuItems = [
-    {
-      title: "Dashboard",
-      path: "/dashboard",
-      icon: Home,
-    },
-    {
-      title: "Clients",
-      path: "/clients",
-      icon: Users,
-    },
-    {
-      title: "Orders",
-      path: "/orders",
-      icon: ShoppingCart,
-    },
-    {
-      title: "Settings",
-      path: "/settings",
-      icon: Settings,
-    },
-  ];
+export function AppSidebar() {
+  const { isOpen, onOpen, onClose } = useSidebar();
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="bg-primary rounded-lg p-1">
-            <ShoppingCart className="h-6 w-6 text-white" />
-          </div>
-          <div className="font-bold text-sidebar-foreground text-xl">ClientVault</div>
+    <aside className={cn(
+      "fixed left-0 top-0 z-30 h-screen w-64 -translate-x-full border-r bg-background transition-transform lg:translate-x-0",
+      isOpen && "translate-x-0"
+    )}>
+      <div className="flex h-full flex-col gap-4">
+        <div className="flex h-14 items-center border-b px-4 font-semibold">
+          ClientVault
         </div>
-      </SidebarHeader>
-      
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton
-                    asChild
-                    className={cn(
-                      isActive(item.path) && "bg-sidebar-accent text-sidebar-accent-foreground"
-                    )}
-                  >
-                    <Link to={item.path} className="flex items-center gap-2">
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      
-      <SidebarFooter>
-        <div className="p-4">
-          <Button 
-            onClick={logout}
-            variant="ghost" 
-            className="w-full flex items-center gap-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        <nav className="flex-1 space-y-1 px-2">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                isActive && "bg-accent text-accent-foreground"
+              )
+            }
           >
-            <LogOut className="h-4 w-4" />
-            <span>Log Out</span>
-          </Button>
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/clients"
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                isActive && "bg-accent text-accent-foreground"
+              )
+            }
+          >
+            <User className="h-4 w-4" />
+            Clients
+          </NavLink>
+          <NavLink
+            to="/orders"
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                isActive && "bg-accent text-accent-foreground"
+              )
+            }
+          >
+            <ListChecks className="h-4 w-4" />
+            Orders
+          </NavLink>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                isActive && "bg-accent text-accent-foreground"
+              )
+            }
+          >
+            <Settings className="h-4 w-4" />
+            Settings
+          </NavLink>
+          <NavLink
+            to="/database"
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                isActive && "bg-accent text-accent-foreground"
+              )
+            }
+          >
+            <Database className="h-4 w-4" />
+            Database
+          </NavLink>
+        </nav>
+        <div className="border-t p-4">
+          <p className="text-xs text-muted-foreground">
+            ClientVault - v0.0.1
+          </p>
         </div>
-      </SidebarFooter>
-    </Sidebar>
+      </div>
+    </aside>
   );
-};
-
-export default AppSidebar;
+}

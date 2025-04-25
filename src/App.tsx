@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Orders from "./pages/Orders";
 import Settings from "./pages/Settings";
+import DatabaseManager from "./pages/DatabaseManager";
 
 // Import CryptoJS for security
 import CryptoJS from 'crypto-js';
@@ -85,6 +85,7 @@ const App = () => (
             <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
             <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/database" element={<ProtectedRoute><DatabaseManager /></ProtectedRoute>} />
             
             {/* Default routes */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
