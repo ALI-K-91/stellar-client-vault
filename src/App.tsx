@@ -9,6 +9,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Clients from "./pages/Clients";
+import Orders from "./pages/Orders";
+import Settings from "./pages/Settings";
 
 // Import CryptoJS for security
 import CryptoJS from 'crypto-js';
@@ -79,6 +82,9 @@ const App = () => (
             
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             
             {/* Default routes */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
