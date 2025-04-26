@@ -27,13 +27,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check for existing login on initial load
-  useEffect(() => {
-    const savedUser = storageService.getUser();
-    if (savedUser) {
-      setUser(savedUser);
+  // Enhanced authentication persistence check on initial load and focus
+  const checkUserAuth = () => {
+    try {
+      const savedUser = storageService.getUser();
+      if (savedUser) {
+        console.log("User authentication restored from storage");
+        setUser(savedUser);
+      } else {
+        console.log("No user found in storage");
+      }
+    } catch (error) {
+      console.error("Error checking authentication:", error);
     }
     setLoading(false);
+  };
+
+  // Check for existing login on initial load
+  useEffect(() => {
+    checkUserAuth();
+    
+    // Add event listeners for app state changes (important for mobile)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        console.log("App became visible, checking auth");
+        checkUserAuth();
+      }
+    });
+    
+    // Clean up event listeners
+    return () => {
+      document.removeEventListener("visibilitychange", checkUserAuth);
+    };
   }, []);
 
   const login = async (username: string, password: string): Promise<boolean> => {
@@ -54,6 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const passwordHash = CryptoJS.SHA256(password).toString();
       
       if (storedUser.username === username && storedUser.passwordHash === passwordHash) {
+        console.log("User authenticated successfully");
         setUser(storedUser);
         return true;
       } else {
@@ -62,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           description: "Invalid username or password",
           variant: "destructive"
         });
+        console.log("Authentication failed: credentials don't match");
         return false;
       }
     } catch (error) {
@@ -106,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: "Your account has been created successfully!"
       });
       
+      console.log("User registered successfully");
       return true;
     } catch (error) {
       console.error('Registration error:', error);
@@ -120,8 +148,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
-    // We don't remove the user data from storage
+    // Note: We don't remove the user data from storage
     // as we need it for future logins
+    console.log("User logged out");
   };
 
   return (
