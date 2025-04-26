@@ -1,4 +1,5 @@
 
+import React, { useEffect } from "react";
 import {
   Home,
   LayoutDashboard,
@@ -26,7 +27,6 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect } from "react";
 
 export function AppSidebar() {
   const { state, open, setOpen } = useSidebar();
