@@ -9,7 +9,7 @@ import {
   Database,
   Menu,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -32,11 +32,12 @@ export function AppSidebar() {
   const { state, open, setOpen } = useSidebar();
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
+  const location = useLocation();
 
   // Force close drawer when navigating
   useEffect(() => {
     setOpenMobile(false);
-  }, [window.location.pathname]);
+  }, [location.pathname]);
 
   const renderNavLinks = (closeSidebar = false) => {
     const links = [

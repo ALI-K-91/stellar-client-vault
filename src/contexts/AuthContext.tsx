@@ -39,12 +39,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error("Error checking authentication:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   // Check for existing login on initial load
   useEffect(() => {
+    // Initial auth check
     checkUserAuth();
     
     // Add event listeners for app state changes (important for mobile)
@@ -55,9 +57,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
     
+    // Check for auth when app resumes from background on mobile
+    document.addEventListener("resume", checkUserAuth);
+    
     // Clean up event listeners
     return () => {
-      document.removeEventListener("visibilitychange", checkUserAuth);
+      document.removeEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") checkUserAuth();
+      });
+      document.removeEventListener("resume", checkUserAuth);
     };
   }, []);
 
@@ -148,8 +156,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
-    // Note: We don't remove the user data from storage
-    // as we need it for future logins
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out successfully."
+    });
     console.log("User logged out");
   };
 
